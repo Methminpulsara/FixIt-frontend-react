@@ -3,28 +3,32 @@ import Navbar from './components/common/Navbar';
 import Hero from './components/common/Hero';
 import Services from './components/common/Services';
 import './App.css'
-
+import Process from './components/common/Process';
+import RightSideNav from './components/common/RightSideNav';
+import { useState } from 'react'; // මේ පේළිය අනිවාර්යයෙන්ම ඕනේ
 
 function App() {
-  return (
-<div className="min-h-screen bg-light-bg dark:bg-dark-bg selection:bg-primary selection:text-dark-bg transition-colors duration-500">      {/* Navbar එක Routes වලින් එළියේ තියෙන්න ඕනේ. එතකොටයි හැම පේජ් එකකම පේන්නේ */}
-      <Navbar />
-      
-      <main>
-        <Routes>
-          <Route path="/" element={
-            <>
-              <Hero />
-              <Services />
-            </>
-          } />
-          
-          {/* උදාහරණයක් විදිහට පස්සේ කාලෙක ලොගින් පේජ් එකක් හැදුවොත් මෙහෙම දාන්න පුළුවන් */}
-          {/* <Route path="/login" element={<Login />} /> */}
-        </Routes>
-      </main>
+  // Theme state එක මෙතන තියාගන්න (Navbar එකටයි අනිත් ඒවාටයි දෙන්න ඕන නිසා)
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-      {/* Footer එකකුත් පස්සේ මෙතනට දාමු */}
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark');
+  };
+
+  return (
+    <div className="bg-light-bg dark:bg-dark-bg min-h-screen transition-colors duration-500">
+      
+      {/* පරණ Navbar එක වෙනුවට මේක දාන්න */}
+      <RightSideNav isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+
+      <main>
+        <Hero />
+        <Process />
+        <Services />
+        {/* <Reviews /> */}
+      </main>
+      
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { Search, MapPin, Wrench, Sparkles } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <section id='hero' className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       
       {/* Background with Organic Shape */}
       <div className="absolute inset-0 z-0 organic-shape overflow-hidden">

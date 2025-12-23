@@ -29,3 +29,8 @@
 .organic-shape {
   clip-path: polygon(0% 0%, 100% 0%, 100% 88%, 70% 100%, 30% 95%, 0% 100%);
 }
+.active-dot div {
+  background-color: var(--color-primary) !important;
+  transform: scale(1.5);
+  box-shadow: 0 0 15px var(--color-primary);
+}
