@@ -10,7 +10,7 @@ const Hero = () => {
       <div className="absolute inset-0 z-0 organic-shape overflow-hidden">
         <img 
           src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2070" 
-          className="w-full h-full object-cover brightness-50 dark:brightness-[0.2] transition-all duration-700"
+          className="w-full h-full object-cover brightness-75 dark:brightness-[0.2] transition-all duration-700"
           alt="FixIt Background"
         />
         {/* Gradient Overlay for better contrast */}

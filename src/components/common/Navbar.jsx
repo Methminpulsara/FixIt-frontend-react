@@ -19,9 +19,15 @@ const Navbar = () => {
 
   // Theme Toggle logic
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
-  };
+  const newMode = !isDarkMode;
+  setIsDarkMode(newMode);
+  
+  if (newMode) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+};
 
   const navLinks = [
     { name: 'Home', href: '#' },
