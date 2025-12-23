@@ -1,11 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  background-color: #0d0d0d; /* Default background එක light පාටට */
+@theme {
+  --color-primary: #FEB05D;
+  --color-secondary: #5A7ACD;
+  --color-dark-bg: #2B2A2A;
+  --color-light-bg: #F5F2F2;
 }
 
-.dark :root {
-  background-color: #f7e9e9; /* Dark mode එකේදී background එක dark පාටට */
+:root {
+  background-color: var(--color-light-bg);
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  background-color: var(--color-dark-bg);
 }
