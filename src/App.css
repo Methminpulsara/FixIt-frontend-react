@@ -1,7 +1,7 @@
+@reference "./index.css"; /* ඔයාගේ ප්‍රධාන tailwind file එකේ path එක මෙතනට දෙන්න */
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+
+
+/* in sinup page */
+
+.signup-input {
+  @apply w-full bg-white/5 border border-white/10 py-4 px-5 rounded-[20px] text-white outline-none focus:border-primary/50 focus:bg-white/[0.08] transition-all font-medium;
+}
+/* ////////// */

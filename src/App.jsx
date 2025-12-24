@@ -1,19 +1,15 @@
 /* eslint-disable no-unused-vars */
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Routes, Route } from 'react-router-dom';
-import Hero from './components/common/Hero';
-import Services from './components/common/Services';
-import './App.css'
-import Process from './components/common/Process';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react'; 
 import LeftSidebar from './components/common/LeftSidebar';
-import Reviews from './components/common/Reviews';
-import Footer from './components/common/Footer';
-import DynamicPath from './components/common/DynamicPath'; // 👈 මේක අමතක කරන්න එපා
+import Home from './pages/Home'; // 🏠 Home පේජ් එක
+import Login from './pages/auth/Login'; // 🔑 Login පේජ් එක
+import './App.css'
+import SignUp from './pages/auth/SingUp';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
-
+  const location = useLocation();
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
   };
@@ -26,28 +22,23 @@ function App() {
     }
   }, [isDarkMode]);
 
+  const isAuthPage = location.pathname.startsWith('/login') || location.pathname.startsWith('/sign-up');
   return (
-    <div className={`min-h-screen transition-colors duration-700 ${isDarkMode ? 'dark bg-[#050505]' : 'bg-light-bg'}`}>
-      <LeftSidebar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+<div className={`min-h-screen transition-colors duration-700 ${isDarkMode ? 'dark bg-[#050505]' : 'bg-light-bg'}`}>
+    
+    {/* Auth Page එකක් නෙවෙයි නම් විතරක් Sidebar එක පෙන්වන්න */}
+    {!isAuthPage && <LeftSidebar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
 
-      <main className="lg:pl-[140px] px-8 py-8 transition-all duration-700">
-        <div className="relative rounded-[50px] border border-black/5 dark:border-white/5 overflow-hidden shadow-sm bg-white dark:bg-[#050505]">
-          
-          {/* 1. මේක තමයි පාර (Path) - හැමවිටම background එකේ තියෙන්නේ */}
-          <DynamicPath /> 
-
-          {/* 2. Content එක තියෙන කොටස - z-10 දාලා පාරට උඩින් තියෙනවා */}
-          <div className="relative z-10 bg-transparent">
-            <Hero />
-            <Process />
-            <Services />
-            <Reviews />
-            <Footer />
-          </div>
-
-        </div>
-      </main>
-    </div>
+    <main className={`${isAuthPage ? 'p-0 m-0 w-full min-h-screen' : 'lg:pl-35 px-8 py-8'} transition-all duration-700`}>
+      <div className={isAuthPage ? "w-full min-h-screen" : "relative rounded-[50px] border border-black/5 dark:border-white/5 overflow-hidden shadow-sm bg-white dark:bg-[#050505]"}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
+        </Routes>
+      </div>
+    </main>
+  </div>
   );
 }
 

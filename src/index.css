@@ -20,12 +20,15 @@
   color: #2b2a2a;
 }
 
-/* Dark Mode colors */
-.dark {
-  background-color: var(--color-dark-bg);
-  color: #f5f2f2;
+body {
+  margin: 0;
+  padding: 0;
 }
 
+/* Dark mode එකේදී මුළු screen එකම කළු වෙන්න මේක උදව් වෙයි */
+.dark body {
+  background-color: #050505; 
+}
 .organic-shape {
   clip-path: polygon(0% 0%, 100% 0%, 100% 88%, 70% 100%, 30% 95%, 0% 100%);
 }
