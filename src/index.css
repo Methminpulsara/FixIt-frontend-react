@@ -49,3 +49,19 @@ body {
 .sidebar-active svg {
   color: #FEB05D !important;
 }
+
+.signup-input {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 1.25rem;
+  border-radius: 20px;
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.signup-input:focus {
+  border-color: rgba(254, 176, 93, 0.5); /* primary color */
+  background-color: rgba(255, 255, 255, 0.08);
+}
