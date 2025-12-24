@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL:"https://localhost/5000/api/v1/",
+    baseURL:"http://localhost:5000/api/v1/auth",
 })
 
 
 export const loginUser = (credentials) =>{
-    return api.post('/loging' , credentials);
+    return api.post('/login' , credentials);
 }
