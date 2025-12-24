@@ -1,3 +1,344 @@
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 npm install axios lucide-react framer-motion zustand next-themes clsx tailwind-merge
+
+
+{
+import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
+import { useRef } from 'react';
+import { Search, PhoneCall, CheckCircle, Truck } from 'lucide-react';
+
+const steps = [
+  { title: "Search Location", desc: "Tell us where you are stranded. We track coordinates.", icon: Search },
+  { title: "Choose Service", desc: "Select towing, battery jump, or mechanical fix.", icon: Truck },
+  { title: "Instant Connection", desc: "We connect you with the nearest pro in seconds.", icon: PhoneCall },
+  { title: "Problem Fixed", desc: "Get back on the road safely and quickly.", icon: CheckCircle }
+];
+
+const Process = () => {
+  const containerRef = useRef(null);
+  const titleRef = useRef(null);
+  const isTitleInView = useInView(titleRef, { once: true, margin: "-100px" });
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Slower, smoother spring animation for path
+  const pathLength = useSpring(
+    useTransform(scrollYProgress, [0.15, 0.85], [0, 1]),
+    { stiffness: 30, damping: 25, mass: 1 }
+  );
+
+  // Parallax effect for title
+  const titleY = useTransform(scrollYProgress, [0, 0.4], [0, -80]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.25, 0.4], [1, 1, 0.2]);
+
+  // Rotate effect for the word "WORKS"
+  const titleRotate = useTransform(scrollYProgress, [0, 0.2], [0, -3]);
+
+  return (
+    <section id="process" ref={containerRef} className="py-32 bg-transparent relative overflow-hidden transition-colors duration-500">
+      <div className="container mx-auto px-6 relative z-10">
+        
+        <motion.div 
+          ref={titleRef}
+          className="text-center mb-40"
+          style={{ y: titleY, opacity: titleOpacity }}
+        >
+          <motion.h2 
+            className="text-6xl md:text-8xl font-black text-dark-bg dark:text-white tracking-tighter"
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={isTitleInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <motion.span
+              initial={{ opacity: 0, x: -30 }}
+              animate={isTitleInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-block"
+            >
+              HOW
+            </motion.span>{" "}
+            <motion.span
+              initial={{ opacity: 0, x: -30 }}
+              animate={isTitleInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-block"
+            >
+              IT
+            </motion.span>{" "}
+            <motion.span 
+              className="text-primary italic inline-block"
+              initial={{ opacity: 0, rotate: -10, scale: 0.8 }}
+              animate={isTitleInView ? { opacity: 1, rotate: 0, scale: 1 } : {}}
+              style={{ rotate: titleRotate }}
+              transition={{ duration: 1.4, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            >
+              WORKS.
+            </motion.span>
+          </motion.h2>
+
+          {/* Animated underline */}
+          <motion.div
+            className="h-1 bg-primary mx-auto mt-8 rounded-full"
+            initial={{ width: 0, opacity: 0 }}
+            animate={isTitleInView ? { width: "120px", opacity: 1 } : {}}
+            transition={{ duration: 1.5, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </motion.div>
+
+        <div className="relative max-w-5xl mx-auto">
+          {/* 🐍 Enhanced Curved Snake Path SVG */}
+          <svg className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-full h-[110%] hidden md:block pointer-events-none" viewBox="0 0 400 1200" fill="none">
+            {/* Pulsing outer glow */}
+            <motion.path 
+              d="M200 0 C 400 300, 0 600, 200 900 C 400 1200, 0 1500, 200 1800" 
+              stroke="#FEB05D" 
+              strokeWidth="30" 
+              style={{ pathLength }}
+              className="blur-2xl"
+              animate={{ opacity: [0.1, 0.3, 0.1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Inner glow */}
+            <motion.path 
+              d="M200 0 C 400 300, 0 600, 200 900 C 400 1200, 0 1500, 200 1800" 
+              stroke="#FEB05D" 
+              strokeWidth="15" 
+              style={{ pathLength }}
+              className="blur-lg opacity-40"
+            />
+            {/* Base gray path */}
+            <path 
+              d="M200 0 C 400 300, 0 600, 200 900 C 400 1200, 0 1500, 200 1800" 
+              stroke="currentColor" 
+              className="text-black/5 dark:text-white/5"
+              strokeWidth="2" 
+              strokeDasharray="10 10"
+            />
+            {/* Animated primary path */}
+            <motion.path 
+              d="M200 0 C 400 300, 0 600, 200 900 C 400 1200, 0 1500, 200 1800" 
+              stroke="#FEB05D" 
+              strokeWidth="4" 
+              style={{ pathLength }}
+              className="drop-shadow-[0_0_20px_#FEB05D]"
+            />
+            {/* Animated dots along path */}
+            <motion.circle
+              r="6"
+              fill="#FEB05D"
+              style={{
+                offsetPath: "path('M200 0 C 400 300, 0 600, 200 900 C 400 1200, 0 1500, 200 1800')",
+                offsetDistance: useTransform(pathLength, [0, 1], ["0%", "100%"])
+              }}
+              className="drop-shadow-[0_0_10px_#FEB05D]"
+            />
+          </svg>
+
+          <div className="space-y-40">
+            {steps.map((step, i) => {
+              const isEven = i % 2 === 0;
+              const stepRef = useRef(null);
+              const isInView = useInView(stepRef, { once: true, margin: "-150px" });
+              
+              return (
+                <motion.div 
+                  key={i}
+                  ref={stepRef}
+                  initial={{ opacity: 0, x: isEven ? -100 : 100, y: 80, rotateY: isEven ? -15 : 15 }}
+                  animate={isInView ? { opacity: 1, x: 0, y: 0, rotateY: 0 } : {}}
+                  transition={{ 
+                    duration: 1.6, 
+                    delay: i * 0.2,
+                    ease: [0.22, 1, 0.36, 1]
+                  }}
+                  className={`flex flex-col md:flex-row items-center gap-20 ${!isEven ? 'md:flex-row-reverse' : ''}`}
+                >
+                  <motion.div 
+                    className="w-full md:w-1/2 p-10 rounded-[45px] bg-black/5 dark:bg-white/[0.03] backdrop-blur-3xl border border-black/10 dark:border-white/10 transition-all duration-700 group relative overflow-hidden"
+                    whileHover={{ 
+                      scale: 1.03,
+                      borderColor: "rgba(254, 176, 93, 0.5)",
+                      boxShadow: "0 20px 60px rgba(254, 176, 93, 0.15)"
+                    }}
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    {/* Animated gradient overlay on hover */}
+                    <motion.div 
+                      className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/3 to-transparent opacity-0 group-hover:opacity-100"
+                      transition={{ duration: 0.9 }}
+                    />
+
+                    {/* Floating particles effect */}
+                    <motion.div
+                      className="absolute top-4 right-4 w-2 h-2 rounded-full bg-primary/30"
+                      animate={{
+                        y: [0, -20, 0],
+                        opacity: [0.3, 0.8, 0.3],
+                        scale: [1, 1.5, 1]
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: i * 0.5
+                      }}
+                    />
+                    <motion.div
+                      className="absolute bottom-8 left-8 w-1.5 h-1.5 rounded-full bg-primary/40"
+                      animate={{
+                        y: [0, -15, 0],
+                        opacity: [0.4, 0.9, 0.4],
+                        scale: [1, 1.3, 1]
+                      }}
+                      transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: i * 0.3 + 0.5
+                      }}
+                    />
+                    
+                    {/* Icon with enhanced animations */}
+                    <motion.div 
+                      className="bg-primary/20 w-16 h-16 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-primary transition-all duration-700 relative z-10"
+                      initial={{ scale: 0, rotate: -180 }}
+                      animate={isInView ? { scale: 1, rotate: 0 } : {}}
+                      transition={{ 
+                        duration: 1.2, 
+                        delay: i * 0.2 + 0.4,
+                        type: "spring",
+                        stiffness: 100
+                      }}
+                      whileHover={{ 
+                        rotate: [0, -8, 8, -8, 0], 
+                        scale: 1.15 
+                      }}
+                      transition={{ duration: 0.8 }}
+                    >
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-0 rounded-2xl border-2 border-primary/20 border-dashed"
+                      />
+                      <motion.div
+                        whileHover={{ scale: 1.2, rotate: 15 }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        <step.icon className="text-primary group-hover:text-black transition-colors duration-700" size={30} />
+                      </motion.div>
+                    </motion.div>
+                    
+                    {/* Step number with stagger animation */}
+                    <motion.h3 
+                      className="text-4xl font-black text-dark-bg dark:text-white mb-4 tracking-tighter uppercase relative z-10"
+                      initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+                      animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+                      transition={{ duration: 1, delay: i * 0.2 + 0.6 }}
+                    >
+                      <motion.span
+                        className="inline-block"
+                        whileHover={{ 
+                          scale: 1.1, 
+                          color: "#FEB05D",
+                          textShadow: "0 0 20px rgba(254, 176, 93, 0.5)"
+                        }}
+                        transition={{ duration: 0.4 }}
+                      >
+                        0{i+1}.
+                      </motion.span>{" "}
+                      {step.title.split(" ").map((word, wordIndex) => (
+                        <motion.span
+                          key={wordIndex}
+                          className="inline-block"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={isInView ? { opacity: 1, y: 0 } : {}}
+                          transition={{ 
+                            duration: 0.8, 
+                            delay: i * 0.2 + 0.7 + wordIndex * 0.1 
+                          }}
+                        >
+                          {word}{wordIndex < step.title.split(" ").length - 1 ? " " : ""}
+                        </motion.span>
+                      ))}
+                    </motion.h3>
+                    
+                    {/* Description with fade in */}
+                    <motion.p 
+                      className="text-gray-500 dark:text-gray-400 text-lg font-medium leading-relaxed relative z-10"
+                      initial={{ opacity: 0, y: 20, filter: "blur(5px)" }}
+                      animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+                      transition={{ duration: 1.2, delay: i * 0.2 + 0.9 }}
+                    >
+                      {step.desc}
+                    </motion.p>
+
+                    {/* Animated corner accent */}
+                    <motion.div
+                      className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-bl-[45px]"
+                      initial={{ scale: 0, opacity: 0, rotate: -90 }}
+                      animate={isInView ? { scale: 1, opacity: 1, rotate: 0 } : {}}
+                      transition={{ 
+                        duration: 1, 
+                        delay: i * 0.2 + 1,
+                        type: "spring",
+                        stiffness: 80
+                      }}
+                    />
+
+                    {/* Number badge in corner */}
+                    <motion.div
+                      className="absolute -top-4 -left-4 w-12 h-12 bg-primary rounded-full flex items-center justify-center font-black text-black text-xl shadow-lg"
+                      initial={{ scale: 0, rotate: -180 }}
+                      animate={isInView ? { scale: 1, rotate: 0 } : {}}
+                      transition={{ 
+                        duration: 1, 
+                        delay: i * 0.2 + 0.5,
+                        type: "spring",
+                        stiffness: 150
+                      }}
+                      whileHover={{ 
+                        scale: 1.2, 
+                        rotate: 360,
+                        boxShadow: "0 0 30px rgba(254, 176, 93, 0.8)"
+                      }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      {i + 1}
+                    </motion.div>
+                  </motion.div>
+                  
+                  <div className="hidden md:block w-1/2"></div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bottom CTA with reveal animation */}
+        <motion.div
+          className="text-center mt-32"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5, delay: 0.5 }}
+        >
+          <motion.div
+            className="inline-block"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+          >
+            <p className="text-2xl font-bold text-gray-600 dark:text-gray-400">
+              Ready to get started?
+            </p>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default Process;}

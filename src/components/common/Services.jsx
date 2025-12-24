@@ -11,7 +11,7 @@ const services = [
 
 const Services = () => {
   return (
-    <section id="services" className="py-32 px-6 bg-transparent relative">
+    <section id="services" className="py-32 bg-transparent relative overflow-hidden transition-colors duration-500">
       <div className="container mx-auto">
         
         {/* Modern Header */}
