@@ -34,3 +34,15 @@
   transform: scale(1.5);
   box-shadow: 0 0 15px var(--color-primary);
 }
+
+.sidebar-active {
+  background-color: rgba(254, 176, 93, 0.15); /* Primary color low opacity */
+}
+
+.sidebar-active span {
+  color: #FEB05D !important;
+}
+
+.sidebar-active svg {
+  color: #FEB05D !important;
+}
