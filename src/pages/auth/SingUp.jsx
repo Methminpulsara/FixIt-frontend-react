@@ -45,7 +45,6 @@ const SignUp = () => {
 
     setIsLoading(true);
     try {
-      // Backend එකට යවන්නේ UserSchema එකට අදාළ දත්ත පමණි
       await registerUser(formData);
       
       alert("Registration Successful! Please login to complete your profile.");
@@ -104,17 +103,20 @@ const SignUp = () => {
               {/* STEP 2: Personal Identity */}
               {step === 2 && (
                 <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
+                 
                   <div className="flex gap-4">
                     <input name="firstName" placeholder="First Name" className="signup-input w-1/2" onChange={handleInputChange} required value={formData.firstName} />
                     <input name="lastName" placeholder="Last Name" className="signup-input w-1/2" onChange={handleInputChange} required value={formData.lastName} />
                   </div>
+                 
                   <div className="relative">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                     <input name="username" placeholder="Username" className="signup-input pl-12" onChange={handleInputChange} required value={formData.username} />
                   </div>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-                    <input name="email" type="email" placeholder="Email Address" className="signup-input pl-12" onChange={handleInputChange} required value={formData.email} />
+               
+                    <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                    <input name="phone" placeholder="Phone Number" className="signup-input pl-12" onChange={handleInputChange} required value={formData.phone} />
                   </div>
                 </motion.div>
               )}
@@ -122,14 +124,16 @@ const SignUp = () => {
               {/* STEP 3: Security & Finalize */}
               {step === 3 && (
                 <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-                    <input name="phone" placeholder="Phone Number" className="signup-input pl-12" onChange={handleInputChange} required value={formData.phone} />
+                   <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                    <input name="email" type="email" placeholder="Email Address" className="signup-input pl-12" onChange={handleInputChange} required value={formData.email} />
                   </div>
+
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                     <input name="password" type="password" placeholder="Password" className="signup-input pl-12" onChange={handleInputChange} required value={formData.password} />
                   </div>
+
                   <div className="bg-primary/5 p-4 rounded-2xl border border-primary/20 flex gap-3 mt-4">
                     <ShieldCheck className="text-primary" size={20} />
                     <p className="text-[10px] text-gray-400 leading-tight">
