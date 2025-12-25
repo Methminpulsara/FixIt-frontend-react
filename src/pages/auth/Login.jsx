@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { LogIn, Mail, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { loginUser } from '../../services/auth.service'
 import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../../services/auth.Service';
 
 const Login = () => {
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [isLoading, setLoading] = useState(false);
@@ -34,14 +34,21 @@ const Login = () => {
     try {
 
       const response = await loginUser(formData); // API ekt DATA ywnw 
-      const token = response.data.token;
+      const {token ,user } = response.data;
 
       console.log("Success", token)
       localStorage.setItem('token' , token) // save token after login
 
-      // navigate("/dashboard")
-
       alert("Login Success !")
+
+
+      if(user.type === "customer"){
+        navigate('/dashboard')
+      }else{
+        navigate(`/onboarding/${user.type}`)
+      }
+
+
     } catch (error) {
       alert("Login Faild")
       setError(error.response?.data?.message || "Can't Login");
