@@ -3,8 +3,12 @@ import { Link } from 'react-scroll';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Sun, Moon, Wrench, LayoutGrid, Zap, MessageSquare, Home, LogIn } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const LeftSidebar = ({ isDarkMode, toggleTheme }) => {
+
+  const navigate = useNavigate();
+
   const [hovered, setHovered] = useState(null);
 
   const navLinks = [
@@ -69,6 +73,7 @@ const LeftSidebar = ({ isDarkMode, toggleTheme }) => {
         {/* 🚀 The "Out-of-the-box" Login Button */}
         <div className="flex flex-col items-center gap-6 pb-4">
           <motion.button 
+            onClick={()=>navigate('/login')}
             whileHover={{ y: -5, scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className="group/login relative p-5 bg-primary text-dark-bg rounded-[25px] shadow-[0_20px_40px_rgba(254,176,93,0.3)] hover:shadow-primary/60 transition-all overflow-hidden"

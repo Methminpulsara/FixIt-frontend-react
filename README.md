@@ -196,6 +196,23 @@ The application is fully responsive and optimized for:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## 🔗 API Documentation
+
+This section outlines the API endpoints used by the frontend to communicate with the backend, including the request data structures.
+
+### Authentication APIs
+
+#### Login API
+- **Endpoint**: `POST /api/v1/auth/login`
+- **Request Object**:
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "userpassword"
+  }
+  ```
+- **Description**: Authenticates a user and returns a JWT token for session management.
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
