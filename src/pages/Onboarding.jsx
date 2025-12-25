@@ -86,13 +86,24 @@ const handleSubmit = async (e) => {
   setLoading(true);
   
   const formData = new FormData();
-  // ඔයාගේ පරණ data append කිරීම් ටික මෙතන තියාගන්න
 
   try {
     if (type === 'mechanic') {
+      // 1. මේ ටික තමයි අඩුවෙලා තිබුණේ - Data append කිරීම
+      formData.append('experience', mechanicData.experience);
+      formData.append('skills', JSON.stringify(mechanicData.skills));
+      
+      // 2. Files දෙක append කිරීම
+      if (nicFile) formData.append('nic', nicFile);
+      if (crtFile) formData.append('certificate', crtFile);
+
       await createMechanicProfile(formData);
       toast.success('Mechanic Profile Created Successfully!');
     } else {
+      // Garage එකට අවශ්‍ය data append කිරීම
+      formData.append('name', garageData.name);
+      formData.append('address', garageData.address);
+      
       await createGarageProfile(formData);
       toast.success('Garage Profile Created Successfully!');
     }
