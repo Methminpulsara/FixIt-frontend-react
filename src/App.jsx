@@ -32,38 +32,31 @@
 
     return (
       <div className={`min-h-screen transition-colors duration-700 ${isDarkMode ? 'dark bg-[#050505]' : 'bg-light-bg'}`}>
-        <Toaster 
-        position="top-center" 
-        reverseOrder={false} 
-        toastOptions={{
-          // Global styles
-          duration: 4000,
-          style: {
-            background: isDarkMode ? '#151515' : '#fff',
-            color: isDarkMode ? '#fff' : '#000',
-            borderRadius: '20px', // ඔයාගේ card වලට ගැලපෙන rounded corners
-            border: isDarkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)',
-            fontSize: '14px',
-            fontWeight: '600',
-            padding: '12px 24px',
-            backdropFilter: 'blur(10px)',
-          },
-          // Success Alert එකට primary color එක (orange/yellow) icon එකට සෙට් කරමු
-          success: {
-            iconTheme: {
-              primary: '#FFB800', // ඔයාගේ theme එකේ primary color එක
-              secondary: '#fff',
-            },
-          },
-          // Error Alert එක
-          error: {
-            iconTheme: {
-              primary: '#ff4b4b',
-              secondary: '#fff',
-            },
-          },
-        }}
-      />
+<Toaster 
+  position="top-center" 
+  reverseOrder={false} 
+  toastOptions={{
+    duration: 4000,
+    // 💡 මෙතන style: {} කියන එක සම්පූර්ණයෙන්ම අයින් කළා.
+    // 💡 ඒ වෙනුවට dynamic className එකක් පාවිච්චි කරනවා.
+    className: isDarkMode 
+      ? 'bg-[#151515] text-white border border-white/10 rounded-[20px] font-bold shadow-2xl backdrop-blur-md' 
+      : 'bg-white text-black border border-black/5 rounded-[20px] font-bold shadow-sm',
+    
+    success: {
+      iconTheme: {
+        primary: '#FFB800', 
+        secondary: '#fff',
+      },
+    },
+    error: {
+      iconTheme: {
+        primary: '#ff4b4b',
+        secondary: '#fff',
+      },
+    },
+  }}
+/>
         
         {/* 1. Sidebar එක මෙතන තියෙන්න ඕනේ (Main එකෙන් එළියේ) */}
         {!isAuthPage && <LeftSidebar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}

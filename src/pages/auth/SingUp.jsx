@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import toast from 'react-hot-toast'; // මතක ඇතුව import කරගන්න
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, Phone, Lock, ChevronRight, ChevronLeft, Wrench, Car, ShieldCheck, Sparkles } from 'lucide-react';
@@ -39,22 +40,26 @@ const SignUp = () => {
   const nextStep = () => setStep(s => s + 1);
   const prevStep = () => setStep(s => s - 1);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!isFinalStep) return nextStep();
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!isFinalStep) return nextStep();
 
-    setIsLoading(true);
-    try {
-      await registerUser(formData);
-      
-      alert("Registration Successful! Please login to complete your profile.");
-      navigate('/login'); 
-    } catch (error) {
-      alert(error.response?.data?.message || "Registration failed. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  setIsLoading(true);
+  try {
+    await registerUser(formData);
+    
+    // ✅ සාර්ථක ලියාපදිංචිය
+    toast.success("Registration Successful! Now please login.");
+    
+    navigate('/login'); 
+  } catch (error) {
+    // ❌ ලියාපදිංචිය අසාර්ථක වීම
+    const errorMsg = error.response?.data?.message || "Registration failed";
+    toast.error(errorMsg);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const progressWidth = ((step - 1) / (totalSteps - 1)) * 100;
 

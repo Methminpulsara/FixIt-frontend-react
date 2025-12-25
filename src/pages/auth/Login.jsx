@@ -1,4 +1,7 @@
+
 /* eslint-disable no-unused-vars */
+import toast from 'react-hot-toast'; // මතක ඇතුව import කරගන්න
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { LogIn, Mail, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
@@ -26,39 +29,35 @@ const Login = () => {
   }
 
 
-  const handleLogin = async (e) => {
-    e.preventDefault() // page ek refresh wen ek nwththnna 
-    setLoading(true)
-    setError("")
+const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    try {
+  try {
+    const response = await loginUser(formData);
+    const { token, user } = response.data;
 
-      const response = await loginUser(formData); // API ekt DATA ywnw 
-      const {token ,user } = response.data;
+    localStorage.setItem('token', token);
+    
+    // ✅ ලස්සන Success Toast එකක්
+    toast.success(`Welcome back, ${user.name || 'User'}!`);
 
-      console.log("Success", token)
-      localStorage.setItem('token' , token) // save token after login
-
-      alert("Login Success !")
-
-
-      if(user.type === "customer"){
-        navigate('/dashboard')
-      }else{
-        navigate(`/onboarding/${user.type}`)
-      }
-
-
-    } catch (error) {
-      alert("Login Faild")
-      setError(error.response?.data?.message || "Can't Login");
-      console.log(error.message)
-    } finally {
-      setLoading(false); // if work or not finaly 
+    if(user.type === "customer"){
+      navigate('/dashboard');
+    } else {
+      navigate(`/onboarding/${user.type}`);
     }
 
-
+  } catch (error) {
+    // ❌ Error Toast එකක්
+    const errorMsg = error.response?.data?.message || "Login Failed";
+    toast.error(errorMsg);
+    setError(errorMsg);
+  } finally {
+    setLoading(false);
   }
+};
 
 
 
