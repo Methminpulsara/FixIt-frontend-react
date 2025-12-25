@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import toast from 'react-hot-toast';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,7 +8,9 @@ import {
   UploadCloud, Plus, X, Building2, 
   ArrowRight, FileText, Sun, Moon 
 } from 'lucide-react';
-import { createMechanicProfile } from '../services/mechanic.service';
+
+// Service functions import කරගන්න
+import { createMechanicProfile, uploadMechanicDocument } from '../services/mechanic.service';
 import { createGarageProfile } from '../services/garage.service';
 
 const Onboarding = () => {
@@ -47,7 +50,6 @@ const Onboarding = () => {
     setMechanicData({ ...mechanicData, skills: mechanicData.skills.filter(s => s !== skillToRemove) });
   };
 
-  // File Selection Logic
   const handleFileChange = (e, fileType) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith('image/')) {
@@ -58,7 +60,6 @@ const Onboarding = () => {
     }
   };
 
-  // Drag & Drop Logic
   const handleDrop = (e, fileType) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
@@ -70,9 +71,8 @@ const Onboarding = () => {
 
   const handleDragOver = (e) => e.preventDefault();
 
-  // Remove File Function
   const removeFile = (e, fileType) => {
-    e.stopPropagation(); // පෙට්ටිය click වෙන එක නතර කරන්න
+    e.stopPropagation();
     if (fileType === 'nic') {
         setNicFile(null);
         if (nicInputRef.current) nicInputRef.current.value = "";
@@ -83,36 +83,32 @@ const Onboarding = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Garage Data to send:", garageData); // මේක බලන්න data තියෙනවද කියලා
-    setLoading(true);
-    
-    const formData = new FormData();
-    try {
-      if (type === 'mechanic') {
-        formData.append('experience', mechanicData.experience);
-        formData.append('skills', JSON.stringify(mechanicData.skills));
-        if (nicFile) formData.append('nic', nicFile);
-        if (crtFile) formData.append('certificate', crtFile);
-        await createMechanicProfile(formData);
-      } else {
-        formData.append('name', garageData.name);
-        formData.append('address', garageData.address);
-        await createGarageProfile(formData);
-      }
-      navigate('/dashboard');
-    } catch (error) {
-      console.error("Submission failed", error);
-      console.log("Full Error Response:", error.response.data);
-    
-    // මේකෙන් alert එකක් දාමු
-    alert("Validation Error: " + JSON.stringify(error.response.data));
-    } finally {
-      setLoading(false);
-    }
-  };
+  // --- මෙන්න මෙතන තමයි ලොකුම වෙනස තියෙන්නේ ---
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  
+  const formData = new FormData();
+  // ... (කලින් අපි ලියපු දත්ත ටික)
 
+  try {
+    if (type === 'mechanic') {
+      // ... (data append කිරීම්)
+      await createMechanicProfile(formData);
+      toast.success('Mechanic Profile Created Successfully!'); // සාර්ථක වූ විට
+    } else {
+      await createGarageProfile(formData);
+      toast.success('Garage Profile Created Successfully!');
+    }
+
+    navigate('/dashboard');
+  } catch (error) {
+    const errorMsg = error.response?.data?.message || "Something went wrong";
+    toast.error(`Error: ${errorMsg}`); // වැරදුණු විට
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <div className="h-screen w-full flex items-center justify-center relative overflow-hidden bg-white dark:bg-[#050505] transition-colors duration-700 font-sans">
       
@@ -188,7 +184,6 @@ const Onboarding = () => {
 
                 {/* File Uploads */}
                 <div className="grid grid-cols-2 gap-4">
-                  {/* NIC Box */}
                   <div 
                     onClick={() => !nicFile && nicInputRef.current.click()}
                     onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'nic')}
@@ -209,7 +204,6 @@ const Onboarding = () => {
                     )}
                   </div>
                   
-                  {/* Cert Box */}
                   <div 
                     onClick={() => !crtFile && crtInputRef.current.click()}
                     onDragOver={handleDragOver} onDrop={(e) => handleDrop(e, 'crt')}
@@ -232,7 +226,6 @@ const Onboarding = () => {
                 </div>
               </>
             ) : (
-              /* Garage Form */
               <>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black uppercase tracking-widest text-primary ml-1">Garage Name</label>
