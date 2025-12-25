@@ -65,3 +65,12 @@ body {
   border-color: rgba(254, 176, 93, 0.5); /* primary color */
   background-color: rgba(255, 255, 255, 0.08);
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}

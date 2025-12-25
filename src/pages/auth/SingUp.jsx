@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, Phone, Lock, ChevronRight, ChevronLeft, Wrench, Car, ShieldCheck, Sparkles } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { registerUser } from '../../services/auth.service';
+import { registerUser } from '../../services/auth.Service';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ const SignUp = () => {
   const progressWidth = ((step - 1) / (totalSteps - 1)) * 100;
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#050505] p-6 font-sans">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#050505] relative overflow-hidden font-sans p-4">
       
       {/* Background Decor */}
       <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
