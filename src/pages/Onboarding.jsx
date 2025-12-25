@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { useTheme } from '../context/ThemeContext'; 
 import toast from 'react-hot-toast';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,6 +15,9 @@ import { createMechanicProfile, uploadMechanicDocument } from '../services/mecha
 import { createGarageProfile } from '../services/garage.service';
 
 const Onboarding = () => {
+  // Global Theme Context එකෙන් මේ ටික ගන්නවා
+  const { isDarkMode, toggleTheme } = useTheme();
+  
   const { type } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -31,13 +35,7 @@ const Onboarding = () => {
   const [mechanicData, setMechanicData] = useState({ experience: '', skills: [] });
   const [garageData, setGarageData] = useState({ name: '', address: '' });
 
-  // Theme Logic
-  const [isDark, setIsDark] = useState(document.documentElement.classList.contains('dark'));
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-    if (!isDark) document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
-  };
+  // 💡 පරණ local isDark logic එක අයින් කළා - දැන් useTheme() එකෙන් කෙලින්ම වැඩ
 
   const addSkill = () => {
     if (skillInput && !mechanicData.skills.includes(skillInput)) {
@@ -83,19 +81,17 @@ const Onboarding = () => {
     }
   };
 
-  // --- මෙන්න මෙතන තමයි ලොකුම වෙනස තියෙන්නේ ---
 const handleSubmit = async (e) => {
   e.preventDefault();
   setLoading(true);
   
   const formData = new FormData();
-  // ... (කලින් අපි ලියපු දත්ත ටික)
+  // ඔයාගේ පරණ data append කිරීම් ටික මෙතන තියාගන්න
 
   try {
     if (type === 'mechanic') {
-      // ... (data append කිරීම්)
       await createMechanicProfile(formData);
-      toast.success('Mechanic Profile Created Successfully!'); // සාර්ථක වූ විට
+      toast.success('Mechanic Profile Created Successfully!');
     } else {
       await createGarageProfile(formData);
       toast.success('Garage Profile Created Successfully!');
@@ -104,11 +100,12 @@ const handleSubmit = async (e) => {
     navigate('/dashboard');
   } catch (error) {
     const errorMsg = error.response?.data?.message || "Something went wrong";
-    toast.error(`Error: ${errorMsg}`); // වැරදුණු විට
+    toast.error(`Error: ${errorMsg}`);
   } finally {
     setLoading(false);
   }
 };
+
   return (
     <div className="h-screen w-full flex items-center justify-center relative overflow-hidden bg-white dark:bg-[#050505] transition-colors duration-700 font-sans">
       
@@ -122,8 +119,13 @@ const handleSubmit = async (e) => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/80 dark:via-[#050505]/80 to-white dark:to-[#050505]" />
       </div>
 
-      <button onClick={toggleTheme} className="absolute top-8 right-8 z-50 p-4 bg-black/5 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/20 rounded-full text-primary hover:scale-110 transition-all">
-        {isDark ? <Sun size={24} /> : <Moon size={24} />}
+      {/* Theme Toggle Button - දැන් isDarkMode භාවිතා කරයි */}
+      <button 
+        type="button"
+        onClick={toggleTheme} 
+        className="absolute top-8 right-8 z-50 p-4 bg-black/5 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/20 rounded-full text-primary hover:scale-110 transition-all"
+      >
+        {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
       </button>
 
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 w-[90%] max-w-5xl h-[85vh] grid grid-cols-1 lg:grid-cols-2 bg-white/40 dark:bg-white/5 backdrop-blur-3xl rounded-[50px] border border-black/5 dark:border-white/10 shadow-2xl overflow-hidden">

@@ -1,81 +1,71 @@
-  /* eslint-disable no-unused-vars */
-  import { Routes, Route, useLocation } from 'react-router-dom';
-  import { useState, useEffect } from 'react'; 
-  import LeftSidebar from './components/common/LeftSidebar';
-  import Home from './pages/Home';
-  import Login from './pages/auth/Login';
-  import SignUp from './pages/auth/SingUp';
-  import Onboarding from './pages/Onboarding';
-  import './App.css'
+/* eslint-disable no-unused-vars */
+import { Routes, Route, useLocation } from 'react-router-dom';
+import LeftSidebar from './components/common/LeftSidebar';
+import Home from './pages/Home';
+import Login from './pages/auth/Login';
+import SignUp from './pages/auth/SingUp';
+import Onboarding from './pages/Onboarding';
+import './App.css';
 
+// 1. ThemeContext එක import කරගන්න
+import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { Toaster } from 'react-hot-toast';
 
-  import { Toaster } from 'react-hot-toast';
+// Toaster එක සහ අනෙකුත් Components පාලනය කරන ප්‍රධාන කොටස
+function AppContent() {
+  const { isDarkMode, toggleTheme } = useTheme(); // Global state එක මෙතනින් ගමු
+  const location = useLocation();
 
-  function App() {
-    const [isDarkMode, setIsDarkMode] = useState(false);
-    const location = useLocation();
-    const toggleTheme = () => {
-      setIsDarkMode(!isDarkMode);
-    };
+  const isAuthPage = location.pathname.startsWith('/login') || 
+                    location.pathname.startsWith('/sign-up') || 
+                    location.pathname.startsWith('/onboarding');
 
-    useEffect(() => {
-      if (isDarkMode) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }, [isDarkMode]);
+  return (
+    <div className={`min-h-screen transition-colors duration-700 ${isDarkMode ? 'dark bg-[#050505]' : 'bg-light-bg'}`}>
+      
+      {/* 2. Toaster එකට Key එකක් දීමෙන් Theme එක මාරු වූ සැණින් Toast එකේ පාටද මාරු වේ */}
+      <Toaster 
+        key={isDarkMode ? 'dark-toast' : 'light-toast'}
+        position="top-center" 
+        reverseOrder={false} 
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: isDarkMode ? '#1a1a1a' : '#ffffff',
+            color: isDarkMode ? '#ffffff' : '#000000',
+            border: isDarkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.05)',
+            borderRadius: '20px',
+            fontSize: '14px',
+            fontWeight: '600',
+            padding: '12px 24px',
+            boxShadow: isDarkMode ? '0 10px 30px rgba(0,0,0,0.5)' : '0 10px 30px rgba(0,0,0,0.05)',
+          },
+          success: { iconTheme: { primary: '#FFB800', secondary: '#fff' } },
+          error: { iconTheme: { primary: '#ff4b4b', secondary: '#fff' } },
+        }}
+      />
+      
+      {!isAuthPage && <LeftSidebar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
 
-    const isAuthPage = location.pathname.startsWith('/login') || 
-                      location.pathname.startsWith('/sign-up') || 
-                      location.pathname.startsWith('/onboarding');
+      <main className={`${isAuthPage ? 'p-0 m-0 w-full min-h-screen' : 'lg:pl-[120px] px-8 py-8'} transition-all duration-700`}>
+        <div className={isAuthPage ? "w-full min-h-screen" : "relative rounded-[50px] border border-black/5 dark:border-white/5 overflow-hidden shadow-sm bg-white dark:bg-[#050505]"}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/onboarding/:type" element={<Onboarding />} />
+          </Routes>
+        </div>
+      </main>
+    </div>
+  );
+}
 
-    return (
-      <div className={`min-h-screen transition-colors duration-700 ${isDarkMode ? 'dark bg-[#050505]' : 'bg-light-bg'}`}>
-<Toaster 
-  position="top-center" 
-  reverseOrder={false} 
-  toastOptions={{
-    duration: 4000,
-    // 💡 මෙතන style: {} කියන එක සම්පූර්ණයෙන්ම අයින් කළා.
-    // 💡 ඒ වෙනුවට dynamic className එකක් පාවිච්චි කරනවා.
-    className: isDarkMode 
-      ? 'bg-[#151515] text-white border border-white/10 rounded-[20px] font-bold shadow-2xl backdrop-blur-md' 
-      : 'bg-white text-black border border-black/5 rounded-[20px] font-bold shadow-sm',
-    
-    success: {
-      iconTheme: {
-        primary: '#FFB800', 
-        secondary: '#fff',
-      },
-    },
-    error: {
-      iconTheme: {
-        primary: '#ff4b4b',
-        secondary: '#fff',
-      },
-    },
-  }}
-/>
-        
-        {/* 1. Sidebar එක මෙතන තියෙන්න ඕනේ (Main එකෙන් එළියේ) */}
-        {!isAuthPage && <LeftSidebar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
-
-        {/* 2. මෙන්න ඔයාගේ මුල් CSS ටික ඒ විදියටම තියෙන Main එක */}
-        <main className={`${isAuthPage ? 'p-0 m-0 w-full min-h-screen' : 'lg:pl-[120px] px-8 py-8'} transition-all duration-700`}>
-          
-          {/* 3. මෙන්න ඔයාගේ ලස්සන Rounded Container එක */}
-          <div className={isAuthPage ? "w-full min-h-screen" : "relative rounded-[50px] border border-black/5 dark:border-white/5 overflow-hidden shadow-sm bg-white dark:bg-[#050505]"}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/sign-up" element={<SignUp />} />
-              <Route path="/onboarding/:type" element={<Onboarding />} />
-            </Routes>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  export default App;
+// 3. මුළු App එකම ThemeProvider එකෙන් wrap කරන්න
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
+}
