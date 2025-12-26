@@ -48,8 +48,12 @@ const handleLogin = async (e) => {
 
     if(user.type === "customer"){
       navigate('/dashboard');
-    } else {
+    } else if(!user.isOnboarded) {
       navigate(`/onboarding/${user.type}`);
+    }else if(!user.isVerified){
+      navigate('/pending-approval')
+    }else{
+      navigate('/dashboard')
     }
 
   } catch (error) {
