@@ -1,6 +1,7 @@
 
 /* eslint-disable no-unused-vars */
 import toast from 'react-hot-toast'; // මතක ඇතුව import කරගන්න
+import { useAuth } from '../../context/AuthContext';
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -12,10 +13,11 @@ import { loginUser } from '../../services/auth.Service';
 const Login = () => {
 
   const navigate = useNavigate();
+  const {login} = useAuth();
   
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [isLoading, setLoading] = useState(false);
-  const [ettor, setError] = useState("")
+  const [error, setError] = useState("")
 
   const handleInputChange = (e) =>{
     const {name , value} = e.target;
@@ -38,9 +40,10 @@ const handleLogin = async (e) => {
     const response = await loginUser(formData);
     const { token, user } = response.data;
 
-    localStorage.setItem('token', token);
-    
-    // ✅ ලස්සන Success Toast එකක්
+
+    // pass login users data for auth context
+    login(user,token)
+
     toast.success(`Welcome back, ${user.name || 'User'}!`);
 
     if(user.type === "customer"){

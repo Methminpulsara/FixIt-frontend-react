@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { Routes, Route, useLocation } from 'react-router-dom';
 import LeftSidebar from './components/common/LeftSidebar';
+import ProtectedRoute from './components/common/ProtectedRoute'; // Import ProtectedRoute
 import Home from './pages/Home';
 import Login from './pages/auth/Login';
 import SignUp from './pages/auth/SingUp';
 import Onboarding from './pages/Onboarding';
 import './App.css';
+import { AuthProvider } from './context/AuthContext';
 
 // 1. ThemeContext එක import කරගන්න
 import { ThemeProvider, useTheme } from './context/ThemeContext';
@@ -13,7 +15,7 @@ import { Toaster } from 'react-hot-toast';
 
 // Toaster එක සහ අනෙකුත් Components පාලනය කරන ප්‍රධාන කොටස
 function AppContent() {
-  const { isDarkMode, toggleTheme } = useTheme(); // Global state එක මෙතනින් ගමු
+  const { isDarkMode, toggleTheme } = useTheme(); 
   const location = useLocation();
 
   const isAuthPage = location.pathname.startsWith('/login') || 
@@ -50,10 +52,28 @@ function AppContent() {
       <main className={`${isAuthPage ? 'p-0 m-0 w-full min-h-screen' : 'lg:pl-[120px] px-8 py-8'} transition-all duration-700`}>
         <div className={isAuthPage ? "w-full min-h-screen" : "relative rounded-[50px] border border-black/5 dark:border-white/5 overflow-hidden shadow-sm bg-white dark:bg-[#050505]"}>
           <Routes>
+            {/* --- Public Routes --- */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/onboarding/:type" element={<Onboarding />} />
+
+            {/* --- Protected Routes (Role Based) --- */}
+
+            {/* Mechanic හට පමණක් යා හැකි Onboarding පිටුව */}
+            <Route element={<ProtectedRoute allowedRoles={['mechanic']} />}>
+                <Route path="/onboarding/mechanic" element={<Onboarding typeProp="mechanic" />} />
+            </Route>
+
+            {/* Garage හට පමණක් යා හැකි Onboarding පිටුව */}
+            <Route element={<ProtectedRoute allowedRoles={['garage']} />}>
+                <Route path="/onboarding/garage" element={<Onboarding typeProp="garage" />} />
+            </Route>
+
+            {/* ඕනෑම ලොග් වූ පරිශීලකයෙකුට යා හැකි පොදු Dashboard (අවශ්‍ය නම් පමණක්) */}
+            <Route element={<ProtectedRoute allowedRoles={['mechanic', 'garage', 'customer']} />}>
+                {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+            </Route>
+
           </Routes>
         </div>
       </main>
@@ -61,11 +81,13 @@ function AppContent() {
   );
 }
 
-// 3. මුළු App එකම ThemeProvider එකෙන් wrap කරන්න
+// 3. මුළු App එකම ThemeProvider සහ AuthProvider එකෙන් wrap කරන්න
 export default function App() {
   return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
+    </AuthProvider>
   );
 }

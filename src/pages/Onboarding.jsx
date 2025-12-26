@@ -14,11 +14,12 @@ import {
 import { createMechanicProfile, uploadMechanicDocument } from '../services/mechanic.service';
 import { createGarageProfile } from '../services/garage.service';
 
-const Onboarding = () => {
+const Onboarding = ({typeProp}) => {
   // Global Theme Context එකෙන් මේ ටික ගන්නවා
   const { isDarkMode, toggleTheme } = useTheme();
   
-  const { type } = useParams();
+  const { type: urlType } = useParams();
+  const  type = typeProp || urlType;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [skillInput, setSkillInput] = useState("");
