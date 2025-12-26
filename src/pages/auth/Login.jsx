@@ -40,24 +40,34 @@ const handleLogin = async (e) => {
     const response = await loginUser(formData);
     const { token, user } = response.data;
 
-
-    // pass login users data for auth context
-    login(user,token)
+    // 1. කලින්ම login කරලා ඉන්න (Context update)
+    await login(user, token);
 
     toast.success(`Welcome back, ${user.name || 'User'}!`);
 
-    if(user.type === "customer"){
-      navigate('/dashboard');
-    } else if(!user.isOnboarded) {
-      navigate(`/onboarding/${user.type}`);
-    }else if(!user.isVerified){
-      navigate('/pending-approval')
-    }else{
-      navigate('/dashboard')
-    }
+    // 2. Navigation Logic එක හරි පිළිවෙළට
+    if (user.type === "admin") {
+        // අනිවාර්යයෙන්ම admin නම් dashboard එකටම යවන්න
+        return navigate("/admin/dashboard", { replace: true });
+    } 
+    
+    if (user.type === "customer") {
+        return navigate('/dashboard', { replace: true });
+    } 
+
+    // Mechanic/Garage අයට විතරයි onboarding ඕනේ
+    if (!user.isOnboarded) {
+        return navigate(`/onboarding/${user.type}`, { replace: true });
+    } 
+
+    if (!user.isVerified) {
+        return navigate('/pending-approval', { replace: true });
+    } 
+
+    // වෙන කිසිම එකක් නෙමෙයි නම්
+    navigate('/dashboard', { replace: true });
 
   } catch (error) {
-    // ❌ Error Toast එකක්
     const errorMsg = error.response?.data?.message || "Login Failed";
     toast.error(errorMsg);
     setError(errorMsg);
@@ -65,7 +75,6 @@ const handleLogin = async (e) => {
     setLoading(false);
   }
 };
-
 
 
 

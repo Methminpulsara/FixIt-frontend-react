@@ -14,6 +14,7 @@ import {
 // Service functions
 import { createMechanicProfile, uploadMechanicDocument } from '../services/mechanic.service';
 import { createGarageProfile } from '../services/garage.service';
+import ThemeToggle from '../components/shared/ThemeToggle';
 
 const Onboarding = ({typeProp}) => {
   const { checkAuth } = useAuth(); 
@@ -135,13 +136,14 @@ const Onboarding = ({typeProp}) => {
       </div>
 
       {/* Theme Toggle Button */}
-      <button 
+      {/* <button 
         type="button"
         onClick={toggleTheme} 
         className="absolute top-8 right-8 z-50 p-4 bg-black/5 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/20 rounded-full text-primary hover:scale-110 transition-all"
       >
         {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
-      </button>
+      </button> */}
+      <ThemeToggle/>
 
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 w-[90%] max-w-5xl h-[85vh] grid grid-cols-1 lg:grid-cols-2 bg-white/40 dark:bg-white/5 backdrop-blur-3xl rounded-[50px] border border-black/5 dark:border-white/10 shadow-2xl overflow-hidden">
         
