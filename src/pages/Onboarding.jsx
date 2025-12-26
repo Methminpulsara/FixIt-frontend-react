@@ -4,22 +4,23 @@ import toast from 'react-hot-toast';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; 
 import { 
   Briefcase, Award, CheckCircle, 
   UploadCloud, Plus, X, Building2, 
   ArrowRight, FileText, Sun, Moon 
 } from 'lucide-react';
 
-// Service functions import කරගන්න
+// Service functions
 import { createMechanicProfile, uploadMechanicDocument } from '../services/mechanic.service';
 import { createGarageProfile } from '../services/garage.service';
 
 const Onboarding = ({typeProp}) => {
-  // Global Theme Context එකෙන් මේ ටික ගන්නවා
+  const { checkAuth } = useAuth(); 
   const { isDarkMode, toggleTheme } = useTheme();
   
   const { type: urlType } = useParams();
-  const  type = typeProp || urlType;
+  const type = typeProp || urlType;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [skillInput, setSkillInput] = useState("");
@@ -28,15 +29,11 @@ const Onboarding = ({typeProp}) => {
   const [nicFile, setNicFile] = useState(null);
   const [crtFile, setCertFile] = useState(null);
 
-  // Input Refs
   const nicInputRef = useRef(null);
   const crtInputRef = useRef(null);
 
-  // Data States
   const [mechanicData, setMechanicData] = useState({ experience: '', skills: [] });
   const [garageData, setGarageData] = useState({ name: '', address: '' });
-
-  // 💡 පරණ local isDark logic එක අයින් කළා - දැන් useTheme() එකෙන් කෙලින්ම වැඩ
 
   const addSkill = () => {
     if (skillInput && !mechanicData.skills.includes(skillInput)) {
@@ -55,6 +52,7 @@ const Onboarding = ({typeProp}) => {
       if (fileType === 'nic') setNicFile(file);
       if (fileType === 'crt') setCertFile(file);
     } else {
+      // මෙන්න ඔයා ඉල්ලපු alert එක (remove කළේ නැහැ)
       alert("Please upload an image file (JPG/PNG)");
     }
   };
@@ -82,41 +80,46 @@ const Onboarding = ({typeProp}) => {
     }
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  
-  const formData = new FormData();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (loading) return; // double submit වැළැක්වීමට
+    setLoading(true);
+    
+    try {
+      if (type === 'mechanic') {
+        const formData = new FormData();
+        formData.append('experience', mechanicData.experience);
+        formData.append('skills', JSON.stringify(mechanicData.skills));
+        if (nicFile) formData.append('nic', nicFile);
+        if (crtFile) formData.append('certificate', crtFile);
+        
+        await createMechanicProfile(formData);
+      } else {
+        const garagePayload = new FormData();
+        garagePayload.append('name', garageData.name);
+        garagePayload.append('address', garageData.address);
+        await createGarageProfile(garagePayload);
+      }
 
-  try {
-    if (type === 'mechanic') {
-      // 1. මේ ටික තමයි අඩුවෙලා තිබුණේ - Data append කිරීම
-      formData.append('experience', mechanicData.experience);
-      formData.append('skills', JSON.stringify(mechanicData.skills));
-      
-      // 2. Files දෙක append කිරීම
-      if (nicFile) formData.append('nic', nicFile);
-      if (crtFile) formData.append('certificate', crtFile);
+      toast.success('Profile Created Successfully!');
 
-      await createMechanicProfile(formData);
-      toast.success('Mechanic Profile Created Successfully!');
-    } else {
-      // Garage එකට අවශ්‍ය data append කිරීම
-      formData.append('name', garageData.name);
-      formData.append('address', garageData.address);
-      
-      await createGarageProfile(formData);
-      toast.success('Garage Profile Created Successfully!');
+      // 🔥 මෙන්න වැදගත්ම කොටස:
+      if (typeof checkAuth === 'function') {
+        await checkAuth(); // අලුත් data backend එකෙන් ගේනවා
+      }
+
+      // 💡 Navigate විතරක් කළාම සමහර වෙලාවට state එක පරණයි.
+      // ඒ නිසා window reload එකක් මගින් ProtectedRoute එක refresh කරනවා.
+     
+        window.location.href = '/pending-approval';
+
+    } catch (error) {
+      const errorMsg = error.response?.data?.message || "Something went wrong";
+      toast.error(errorMsg);
+    } finally {
+      setLoading(false);
     }
-
-    navigate('/dashboard');
-  } catch (error) {
-    const errorMsg = error.response?.data?.message || "Something went wrong";
-    toast.error(`Error: ${errorMsg}`);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="h-screen w-full flex items-center justify-center relative overflow-hidden bg-white dark:bg-[#050505] transition-colors duration-700 font-sans">
@@ -131,7 +134,7 @@ const handleSubmit = async (e) => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/80 dark:via-[#050505]/80 to-white dark:to-[#050505]" />
       </div>
 
-      {/* Theme Toggle Button - දැන් isDarkMode භාවිතා කරයි */}
+      {/* Theme Toggle Button */}
       <button 
         type="button"
         onClick={toggleTheme} 
@@ -196,7 +199,6 @@ const handleSubmit = async (e) => {
                   </div>
                 </div>
 
-                {/* File Uploads */}
                 <div className="grid grid-cols-2 gap-4">
                   <div 
                     onClick={() => !nicFile && nicInputRef.current.click()}
@@ -263,6 +265,7 @@ const handleSubmit = async (e) => {
             )}
 
             <button 
+              type="submit"
               disabled={loading}
               className="w-full bg-primary text-black font-black py-5 rounded-2xl flex items-center justify-center gap-3 uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 mt-4 group"
             >
