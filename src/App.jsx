@@ -6,25 +6,24 @@ import Home from './pages/Home';
 import Login from './pages/auth/Login';
 import SignUp from './pages/auth/SingUp';
 import Onboarding from './pages/Onboarding';
-import PendingApproval from './pages/PendingApproval'; // මේක අලුතින් import කරන්න
+import PendingApproval from './pages/PendingApproval'; 
 import './App.css';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 function AppContent() {
   const { isDarkMode, toggleTheme } = useTheme(); 
   const location = useLocation();
 
-  // Pending Approval පිටුවේදීත් Sidebar එක පෙන්වන්නේ නැති වෙන්න මෙතනට එකතු කළා
-  const isAuthPage = location.pathname.startsWith('/login') || 
-                    location.pathname.startsWith('/sign-up') || 
-                    location.pathname.startsWith('/onboarding') ||
-                    location.pathname.startsWith('/pending-approval');
+  // 🛠️ Sidebar එක පෙන්විය යුත්තේ Home Page ('/') එකේදී පමණක් බැවින් මෙය පරීක්ෂා කරන්න
+  const isHomePage = location.pathname === "/";
 
   return (
     <div className={`min-h-screen transition-colors duration-700 ${isDarkMode ? 'dark bg-[#050505]' : 'bg-light-bg'}`}>
       
+      {/* ✅ ඔයා ඊයේ රෑ මහන්සි වෙලා හදපු ලස්සන Toaster CSS ටික මෙතන තියෙනවා */}
       <Toaster 
         key={isDarkMode ? 'dark-toast' : 'light-toast'}
         position="top-center" 
@@ -46,10 +45,12 @@ function AppContent() {
         }}
       />
       
-      {!isAuthPage && <LeftSidebar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
+      {/* 🛠️ Home Page එකේදී විතරක් Sidebar එක පෙන්වන්න */}
+      {isHomePage && <LeftSidebar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
 
-      <main className={`${isAuthPage ? 'p-0 m-0 w-full min-h-screen' : 'lg:pl-[120px] px-8 py-8'} transition-all duration-700`}>
-        <div className={isAuthPage ? "w-full min-h-screen" : "relative rounded-[50px] border border-black/5 dark:border-white/5 overflow-hidden shadow-sm bg-white dark:bg-[#050505]"}>
+      {/* 🛠️ CSS Classes වෙනස් නොකර Layout එක පමණක් පාලනය කළා */}
+      <main className={`${!isHomePage ? 'p-0 m-0 w-full min-h-screen' : 'lg:pl-[120px] px-8 py-8'} transition-all duration-700`}>
+        <div className={!isHomePage ? "w-full min-h-screen" : "relative rounded-[50px] border border-black/5 dark:border-white/5 overflow-hidden shadow-sm bg-white dark:bg-[#050505]"}>
           <Routes>
             {/* --- Public Routes --- */}
             <Route path="/" element={<Home />} />
@@ -58,12 +59,14 @@ function AppContent() {
 
             {/* --- Protected Routes --- */}
             
-            {/* 1. Pending Approval Route - ඕනෑම Role එකක කෙනෙක්ට Verify වෙනකම් පේන පේජ් එක */}
+            <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            </Route>
+
             <Route element={<ProtectedRoute allowedRoles={['mechanic', 'garage']} />}>
                 <Route path="/pending-approval" element={<PendingApproval />} />
             </Route>
 
-            {/* 2. Onboarding Routes */}
             <Route element={<ProtectedRoute allowedRoles={['mechanic']} />}>
                 <Route path="/onboarding/mechanic" element={<Onboarding typeProp="mechanic" />} />
             </Route>
@@ -72,11 +75,9 @@ function AppContent() {
                 <Route path="/onboarding/garage" element={<Onboarding typeProp="garage" />} />
             </Route>
 
-            {/* 3. Dashboard (Verified අය සඳහා පමණි) */}
             <Route element={<ProtectedRoute allowedRoles={['mechanic', 'garage', 'customer', 'admin']} />}>
                 {/* <Route path="/dashboard" element={<Dashboard />} /> */}
             </Route>
-
           </Routes>
         </div>
       </main>

@@ -19,6 +19,13 @@ const ProtectedRoute = ({ allowedRoles }) => {
     return <Navigate to="/" replace />;
   }
 
+  if (userRole === 'admin') return <Outlet />;
+
+  
+  if (user && !user.isOnboarded && user.type !== 'admin') { 
+    return <Navigate to={`/onboarding/${user.type}`} />;
+}
+
   // 3. Profile එක හදලා නැත්නම් (isOnboarded: false) Onboarding එකට යවන්න
   if (!user.isOnboarded && !location.pathname.startsWith('/onboarding')) {
     return <Navigate to={`/onboarding/${userRole}`} replace />;
