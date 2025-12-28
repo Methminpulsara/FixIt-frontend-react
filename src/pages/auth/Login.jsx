@@ -76,9 +76,6 @@ const handleLogin = async (e) => {
   }
 };
 
-
-
-
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#050505] relative overflow-hidden font-sans p-4">
 
