@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import PendingList from '../../components/admin/PendingList'; 
 import { toast } from 'react-hot-toast';
 import { getPendingGarages, getPendingMechanics } from '../../services/admin.service';
-import { useTheme } from '../../context/ThemeContext'; // Theme Context Import
-import { Sun, Moon, LogOut } from 'lucide-react'; // Icons
+import { useTheme } from '../../context/ThemeContext'; 
+import { Sun, Moon, LogOut } from 'lucide-react'; 
 import ThemeToggle from '../../components/shared/ThemeToggle';
 
 const AdminDashboard = () => {
-    // 🔥 toggleTheme එකත් මෙතනින් ගන්න
+    //  toggleTheme 
     const { isDarkMode } = useTheme(); 
     
     const [activeTab, setActiveTab] = useState('mechanics');
@@ -63,15 +63,9 @@ const AdminDashboard = () => {
                         </p>
                     </div>
 
-                    {/* 🔥 Right Side Actions (Theme Toggle & Logout) */}
                     <div className="flex items-center gap-3">
                         <ThemeToggle/>
-                        
-                        {/* Logout Button (Optional placeholder) */}
-                        {/* <button className="flex items-center gap-2 px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition shadow-md text-sm font-medium">
-                            <LogOut size={18} />
-                            Logout
-                        </button> */}
+                     
                     </div>
                 </div>
 

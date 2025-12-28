@@ -11,7 +11,7 @@ const steps = [
 
 const Process = () => {
   return (
-    // Background transparent කිරීම වැදගත් 🎨
+    // Background transparent
     <section id="process" className="py-32 bg-transparent relative overflow-hidden transition-colors duration-500">
       <div className="container mx-auto px-6 relative z-10">
         
@@ -22,7 +22,6 @@ const Process = () => {
         </div>
 
         <div className="relative max-w-5xl mx-auto">
-          {/* මෙතන තිබුණු පරණ SVG එක දැන් අපි අයින් කළා ✅ */}
           
           <div className="space-y-40">
             {steps.map((step, i) => (
@@ -42,7 +41,6 @@ const Process = () => {
                    <h3 className="text-4xl font-black text-dark-bg dark:text-white mb-4 tracking-tighter uppercase">0{i+1}. {step.title}</h3>
                    <p className="text-gray-500 dark:text-gray-400 text-lg font-medium leading-relaxed">{step.desc}</p>
                 </div>
-                {/* අනෙක් පැත්ත හිස්ව තැබීමෙන් පාරට ඉඩ ලැබෙනවා */}
                 <div className="hidden md:block w-1/2"></div>
               </motion.div>
             ))}

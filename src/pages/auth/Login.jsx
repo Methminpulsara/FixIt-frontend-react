@@ -1,6 +1,6 @@
-
 /* eslint-disable no-unused-vars */
-import toast from 'react-hot-toast'; // මතක ඇතුව import කරගන්න
+
+import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 
 import React, { useState } from 'react';
@@ -23,8 +23,8 @@ const Login = () => {
     const {name , value} = e.target;
 
     setFormData((prev)=>({
-      ...prev,  // store old data
-      [name] : value // only update changin field
+      ...prev,
+      [name] : value
 
     }))
 
@@ -40,14 +40,11 @@ const handleLogin = async (e) => {
     const response = await loginUser(formData);
     const { token, user } = response.data;
 
-    // 1. කලින්ම login කරලා ඉන්න (Context update)
     await login(user, token);
 
     toast.success(`Welcome back, ${user.name || 'User'}!`);
 
-    // 2. Navigation Logic එක හරි පිළිවෙළට
     if (user.type === "admin") {
-        // අනිවාර්යයෙන්ම admin නම් dashboard එකටම යවන්න
         return navigate("/admin/dashboard", { replace: true });
     } 
     
@@ -55,7 +52,6 @@ const handleLogin = async (e) => {
         return navigate('/dashboard', { replace: true });
     } 
 
-    // Mechanic/Garage අයට විතරයි onboarding ඕනේ
     if (!user.isOnboarded) {
         return navigate(`/onboarding/${user.type}`, { replace: true });
     } 
@@ -64,7 +60,6 @@ const handleLogin = async (e) => {
         return navigate('/pending-approval', { replace: true });
     } 
 
-    // වෙන කිසිම එකක් නෙමෙයි නම්
     navigate('/dashboard', { replace: true });
 
   } catch (error) {
@@ -79,7 +74,6 @@ const handleLogin = async (e) => {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#050505] relative overflow-hidden font-sans p-4">
 
-      {/* 🎇 Animated Background Glows */}
       <motion.div
         animate={{
           scale: [1, 1.2, 1],
@@ -99,7 +93,6 @@ const handleLogin = async (e) => {
 
       <div className="flex flex-col md:flex-row max-w-5xl w-full items-center gap-12 z-10">
 
-        {/* 🚀 Left Side: Brand/Message (Landing page එකේ Vibe එක) */}
         <div className="hidden lg:block w-1/2">
           <motion.h1
             initial={{ opacity: 0, x: -50 }}
@@ -115,14 +108,12 @@ const handleLogin = async (e) => {
           </p>
         </div>
 
-        {/* 🧊 Right Side: Glass Login Card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="w-full max-w-md"
         >
           <div className="bg-white/3 backdrop-blur-2xl p-10 rounded-4xl shadow-2xl relative">
-            {/* 🛡️ Security Badge */}
             <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#050505] border border-white/10 p-4 rounded-full">
               <ShieldCheck className="text-primary" size={32} />
             </div>

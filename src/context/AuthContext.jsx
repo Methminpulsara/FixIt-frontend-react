@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // 💡 අලුතින් එකතු කළ කොටස: Backend එකෙන් අලුත්ම User data ලබාගැනීම
     const checkAuth = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -17,7 +16,6 @@ export const AuthProvider = ({ children }) => {
         }
 
         try {
-            // Backend එකේ ලොග් වෙලා ඉන්න යූසර්ගේ විස්තර දෙන API එකට කෝල් එකක් දෙනවා
             const response = await api.get('/me'); 
             if (response.data) {
                 setUser(response.data);
@@ -25,7 +23,6 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (error) {
             console.error("Auth sync failed:", error);
-            // ටෝකන් එක expire වෙලා නම් ලොග් අවුට් කරනවා
             if (error.response?.status === 401) logout();
         } finally {
             setLoading(false);
@@ -48,7 +45,6 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
-    // 💡 අමතක නොකර value එකට checkAuth එක ඇතුළත් කරන්න
     return (
         <AuthContext.Provider value={{ user, setUser, login, logout, loading, checkAuth }}>
             {children}
@@ -56,4 +52,5 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);

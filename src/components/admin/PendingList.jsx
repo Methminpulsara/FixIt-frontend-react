@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { handleGarage, handleMechanic } from '../../services/admin.service'; // approve/reject logic
+import { handleGarage, handleMechanic } from '../../services/admin.service'; 
 import { X, Eye, Check, XCircle } from 'lucide-react'; 
 
-// Backend URL එක මෙතන දාන්න (Images load කරන්න)
 const API_BASE_URL = "http://localhost:5000/"; 
 
 const PendingList = ({ data, type, removeFromList }) => {
@@ -51,11 +50,10 @@ const PendingList = ({ data, type, removeFromList }) => {
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
                         {data.map((item) => {
-                            // 🔥 වැදගත්ම තැන: Data එන්නේ item.userId ඇතුලේ
                             const user = item.userId; 
                             const docs = item.documents || {};
 
-                            if (!user) return null; // user නැත්නම් skip කරනවා
+                            if (!user) return null; 
 
                             return (
                                 <tr key={item._id} className="hover:bg-gray-50 dark:hover:bg-[#252525] transition duration-200">

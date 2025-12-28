@@ -1,7 +1,6 @@
-// src/pages/PendingApproval.jsx
 import React from 'react';
 import { Clock, ShieldCheck, LogOut } from 'lucide-react';
-import { useAuth } from '../context/AuthContext'; // ඔයාගේ Auth Context එක
+import { useAuth } from '../context/AuthContext';
 
 const PendingApproval = () => {
   const { logout, user } = useAuth();
