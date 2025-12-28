@@ -11,7 +11,6 @@ import {
   ArrowRight, FileText, Sun, Moon 
 } from 'lucide-react';
 
-// Service functions
 import { createMechanicProfile, uploadMechanicDocument } from '../services/mechanic.service';
 import { createGarageProfile } from '../services/garage.service';
 import ThemeToggle from '../components/shared/ThemeToggle';
@@ -26,7 +25,6 @@ const Onboarding = ({typeProp}) => {
   const [loading, setLoading] = useState(false);
   const [skillInput, setSkillInput] = useState("");
 
-  // Files State
   const [nicFile, setNicFile] = useState(null);
   const [crtFile, setCertFile] = useState(null);
 
@@ -53,7 +51,6 @@ const Onboarding = ({typeProp}) => {
       if (fileType === 'nic') setNicFile(file);
       if (fileType === 'crt') setCertFile(file);
     } else {
-      // මෙන්න ඔයා ඉල්ලපු alert එක (remove කළේ නැහැ)
       alert("Please upload an image file (JPG/PNG)");
     }
   };
@@ -83,7 +80,7 @@ const Onboarding = ({typeProp}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (loading) return; // double submit වැළැක්වීමට
+    if (loading) return;
     setLoading(true);
     
     try {
@@ -104,13 +101,10 @@ const Onboarding = ({typeProp}) => {
 
       toast.success('Profile Created Successfully!');
 
-      // 🔥 මෙන්න වැදගත්ම කොටස:
       if (typeof checkAuth === 'function') {
-        await checkAuth(); // අලුත් data backend එකෙන් ගේනවා
+        await checkAuth();
       }
 
-      // 💡 Navigate විතරක් කළාම සමහර වෙලාවට state එක පරණයි.
-      // ඒ නිසා window reload එකක් මගින් ProtectedRoute එක refresh කරනවා.
      
         window.location.href = '/pending-approval';
 
@@ -125,7 +119,6 @@ const Onboarding = ({typeProp}) => {
   return (
     <div className="h-screen w-full flex items-center justify-center relative overflow-hidden bg-white dark:bg-[#050505] transition-colors duration-700 font-sans">
       
-      {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img 
           src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80&w=2000" 
@@ -135,19 +128,10 @@ const Onboarding = ({typeProp}) => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/80 dark:via-[#050505]/80 to-white dark:to-[#050505]" />
       </div>
 
-      {/* Theme Toggle Button */}
-      {/* <button 
-        type="button"
-        onClick={toggleTheme} 
-        className="absolute top-8 right-8 z-50 p-4 bg-black/5 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/20 rounded-full text-primary hover:scale-110 transition-all"
-      >
-        {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
-      </button> */}
       <ThemeToggle/>
 
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 w-[90%] max-w-5xl h-[85vh] grid grid-cols-1 lg:grid-cols-2 bg-white/40 dark:bg-white/5 backdrop-blur-3xl rounded-[50px] border border-black/5 dark:border-white/10 shadow-2xl overflow-hidden">
         
-        {/* Left Side */}
         <div className="hidden lg:flex flex-col justify-center p-10 bg-primary/5 border-r border-black/5 dark:border-white/5 text-center items-center">
             <div className="w-20 h-20 bg-primary/20 rounded-3xl flex items-center justify-center text-primary mb-6 shadow-xl shadow-primary/10">
                 {type === 'mechanic' ? <Briefcase size={40} /> : <Building2 size={40} />}
@@ -158,7 +142,6 @@ const Onboarding = ({typeProp}) => {
             <p className="mt-4 text-sm text-gray-500 font-medium max-w-[250px]">Join our professional network and grow your automotive business.</p>
         </div>
 
-        {/* Right Side (Form) */}
         <div className="p-8 md:p-12 overflow-y-auto hide-scrollbar flex flex-col justify-center">
           <div className="mb-8">
             <h3 className="text-2xl font-black uppercase dark:text-white text-gray-900 italic tracking-tight">Complete Profile</h3>

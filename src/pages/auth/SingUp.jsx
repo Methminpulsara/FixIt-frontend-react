@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import toast from 'react-hot-toast'; // මතක ඇතුව import කරගන්න
+import toast from 'react-hot-toast';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, Phone, Lock, ChevronRight, ChevronLeft, Wrench, Car, ShieldCheck, Sparkles } from 'lucide-react';
@@ -11,7 +11,6 @@ const SignUp = () => {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   
-  // Backend User Schema එකට අවශ්‍ය fields පමණි
   const [formData, setFormData] = useState({
     type: 'customer',
     firstName: '',
@@ -28,7 +27,6 @@ const SignUp = () => {
     { id: 'garage', label: 'Garage', icon: <Car size={24} />, desc: 'Full service center' },
   ];
 
-  // දැනට පියවර 3 කට සීමා කර ඇත (Role -> Info -> Security)
   const totalSteps = 3;
   const isFinalStep = step === totalSteps;
 
@@ -48,12 +46,10 @@ const handleSubmit = async (e) => {
   try {
     await registerUser(formData);
     
-    // ✅ සාර්ථක ලියාපදිංචිය
     toast.success("Registration Successful! Now please login.");
     
     navigate('/login'); 
   } catch (error) {
-    // ❌ ලියාපදිංචිය අසාර්ථක වීම
     const errorMsg = error.response?.data?.message || "Registration failed";
     toast.error(errorMsg);
   } finally {
@@ -66,12 +62,10 @@ const handleSubmit = async (e) => {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#050505] relative overflow-hidden font-sans p-4">
       
-      {/* Background Decor */}
       <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px]" />
 
       <motion.div layout className="w-full max-w-2xl z-10">
         
-        {/* Progress Bar */}
         <div className="mb-8 px-4">
           <div className="flex justify-between mb-2">
             <span className="text-primary text-xs font-black uppercase tracking-widest">Step {step} of {totalSteps}</span>
@@ -86,7 +80,6 @@ const handleSubmit = async (e) => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <AnimatePresence mode="wait">
               
-              {/* STEP 1: Role Selection */}
               {step === 1 && (
                 <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {roles.map((role) => (
@@ -105,7 +98,6 @@ const handleSubmit = async (e) => {
                 </motion.div>
               )}
 
-              {/* STEP 2: Personal Identity */}
               {step === 2 && (
                 <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
                  
@@ -126,7 +118,6 @@ const handleSubmit = async (e) => {
                 </motion.div>
               )}
 
-              {/* STEP 3: Security & Finalize */}
               {step === 3 && (
                 <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
                    <div className="relative">
@@ -151,7 +142,6 @@ const handleSubmit = async (e) => {
 
             </AnimatePresence>
 
-            {/* Navigation Buttons */}
             <div className="flex gap-4 pt-4">
               {step > 1 && (
                 <button 

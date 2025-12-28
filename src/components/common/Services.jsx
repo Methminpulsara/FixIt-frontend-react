@@ -14,7 +14,6 @@ const Services = () => {
     <section id="services" className="py-32 bg-transparent relative overflow-hidden transition-colors duration-500">
       <div className="container mx-auto">
         
-        {/* Modern Header */}
         <div className="mb-24">
           <motion.span 
             initial={{ opacity: 0 }}
@@ -31,7 +30,6 @@ const Services = () => {
           </h2>
         </div>
 
-        {/* Floating Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((item, index) => (
             <motion.div
@@ -40,10 +38,8 @@ const Services = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ scale: 1.05, rotate: index % 2 === 0 ? 2 : -2 }}
-              /* මෙතනදී dark mode එකේදී card එක අඳුරු පැහැයකට මාරු කරනවා */
               className={`${item.color} dark:bg-white/5 dark:backdrop-blur-xl dark:border dark:border-white/10 ${item.offset} p-10 rounded-[60px] min-h-[380px] flex flex-col justify-between relative overflow-hidden group shadow-2xl transition-all duration-500`}
             >
-              {/* Abstract Background Blur inside card */}
               <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-all duration-500"></div>
               
               <div className="flex justify-between items-start relative z-10">

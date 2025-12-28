@@ -20,7 +20,7 @@ const LeftSidebar = ({ isDarkMode, toggleTheme }) => {
 
   return (
     <aside className="fixed left-6 top-1/2 -translate-y-1/2 z-[100] hidden lg:block">
-      {/* 🔮 The Organic Floating Body */}
+      {/*  The Organic Floating Body */}
       <motion.div 
         className="relative bg-white/40 dark:bg-white/5 backdrop-blur-[40px] border border-white/20 p-4 rounded-full flex flex-col items-center gap-10 shadow-[0_40px_100px_rgba(0,0,0,0.1)] group/nav"
         whileHover={{ scale: 1.02 }}

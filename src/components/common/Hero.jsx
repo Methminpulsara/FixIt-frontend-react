@@ -6,18 +6,15 @@ const Hero = () => {
   return (
     <section id='hero' className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       
-      {/* Background with Organic Shape */}
       <div className="absolute inset-0 z-0 organic-shape overflow-hidden">
         <img 
           src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=2070" 
           className="w-full h-full object-cover brightness-75 dark:brightness-[0.2] transition-all duration-700"
           alt="FixIt Background"
         />
-        {/* Gradient Overlay for better contrast */}
         <div className="absolute inset-0 bg-gradient-to-tr from-dark-bg/80 via-transparent to-primary/10"></div>
       </div>
 
-      {/* Decorative Floating Shapes (The "Different" Look) */}
       <motion.div 
         animate={{ rotate: 360 }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -26,7 +23,6 @@ const Hero = () => {
 
       <div className="container mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-16 items-center">
         
-        {/* Left Content: Bold Typography */}
         <motion.div
           initial={{ opacity: 0, x: -60 }}
           animate={{ opacity: 1, x: 0 }}
