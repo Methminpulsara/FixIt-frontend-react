@@ -17,13 +17,11 @@ function AppContent() {
   const { isDarkMode, toggleTheme } = useTheme(); 
   const location = useLocation();
 
-  // 🛠️ Sidebar එක පෙන්විය යුත්තේ Home Page ('/') එකේදී පමණක් බැවින් මෙය පරීක්ෂා කරන්න
   const isHomePage = location.pathname === "/";
 
   return (
     <div className={`min-h-screen transition-colors duration-700 ${isDarkMode ? 'dark bg-[#050505]' : 'bg-light-bg'}`}>
       
-      {/* ✅ ඔයා ඊයේ රෑ මහන්සි වෙලා හදපු ලස්සන Toaster CSS ටික මෙතන තියෙනවා */}
       <Toaster 
         key={isDarkMode ? 'dark-toast' : 'light-toast'}
         position="top-center" 
@@ -45,19 +43,18 @@ function AppContent() {
         }}
       />
       
-      {/* 🛠️ Home Page එකේදී විතරක් Sidebar එක පෙන්වන්න */}
+      {/*  Home Page  */}
       {isHomePage && <LeftSidebar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />}
 
-      {/* 🛠️ CSS Classes වෙනස් නොකර Layout එක පමණක් පාලනය කළා */}
       <main className={`${!isHomePage ? 'p-0 m-0 w-full min-h-screen' : 'lg:pl-[120px] px-8 py-8'} transition-all duration-700`}>
         <div className={!isHomePage ? "w-full min-h-screen" : "relative rounded-[50px] border border-black/5 dark:border-white/5 overflow-hidden shadow-sm bg-white dark:bg-[#050505]"}>
           <Routes>
-            {/* --- Public Routes --- */}
+            {/*  Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/sign-up" element={<SignUp />} />
 
-            {/* --- Protected Routes --- */}
+            {/* Protected Routes  */}
             
             <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -76,7 +73,6 @@ function AppContent() {
             </Route>
 
             <Route element={<ProtectedRoute allowedRoles={['mechanic', 'garage', 'customer', 'admin']} />}>
-                {/* <Route path="/dashboard" element={<Dashboard />} /> */}
             </Route>
           </Routes>
         </div>
