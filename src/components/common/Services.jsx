@@ -13,9 +13,9 @@ const Services = () => {
   return (
     <section id="services" className="py-32 bg-transparent relative overflow-hidden transition-colors duration-500">
       <div className="container mx-auto">
-        
+
         <div className="mb-24">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             className="text-primary font-black tracking-[5px] uppercase text-xs"
@@ -23,7 +23,7 @@ const Services = () => {
             Expert Solutions
           </motion.span>
           <h2 className="text-5xl md:text-7xl font-black text-dark-bg dark:text-white mt-4 tracking-tighter leading-none">
-            NOT YOUR <br /> 
+            NOT YOUR <br />
             <span className="text-transparent border-t-2 border-primary italic py-2" style={{ WebkitTextStroke: '1px var(--color-primary)' }}>
               AVERAGE
             </span> SERVICE.
@@ -41,7 +41,7 @@ const Services = () => {
               className={`${item.color} dark:bg-white/5 dark:backdrop-blur-xl dark:border dark:border-white/10 ${item.offset} p-10 rounded-[60px] min-h-[380px] flex flex-col justify-between relative overflow-hidden group shadow-2xl transition-all duration-500`}
             >
               <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-all duration-500"></div>
-              
+
               <div className="flex justify-between items-start relative z-10">
                 <div className="bg-white/10 dark:bg-primary/20 backdrop-blur-xl p-5 rounded-[30px] border border-white/20">
                   <item.icon className="text-white dark:text-primary" size={32} />

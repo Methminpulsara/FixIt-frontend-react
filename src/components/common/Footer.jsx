@@ -18,7 +18,7 @@ const Footer = () => {
               ))}
             </div>
           </div>
-          
+
           <div>
             <h4 className="text-dark-bg dark:text-white font-bold mb-6 uppercase tracking-widest text-xs">Quick Links</h4>
             <ul className="space-y-4 text-gray-500 dark:text-gray-400 font-bold">
@@ -35,7 +35,7 @@ const Footer = () => {
             </a>
           </div>
         </div>
-        
+
         <div className="border-t border-black/5 dark:border-white/5 pt-10 text-center">
           <p className="text-gray-500 text-xs font-bold tracking-widest uppercase">© 2024 FIXIT SRI LANKA. ALL RIGHTS RESERVED.</p>
         </div>

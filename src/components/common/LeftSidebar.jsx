@@ -21,12 +21,12 @@ const LeftSidebar = ({ isDarkMode, toggleTheme }) => {
   return (
     <aside className="fixed left-6 top-1/2 -translate-y-1/2 z-[100] hidden lg:block">
       {/*  The Organic Floating Body */}
-      <motion.div 
+      <motion.div
         className="relative bg-white/40 dark:bg-white/5 backdrop-blur-[40px] border border-white/20 p-4 rounded-full flex flex-col items-center gap-10 shadow-[0_40px_100px_rgba(0,0,0,0.1)] group/nav"
         whileHover={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
       >
-        
+
         {/* Logo with Outer Glow */}
         <div className="relative pt-4">
           <div className="absolute inset-0 bg-primary/30 blur-2xl rounded-full scale-150 animate-pulse" />
@@ -63,7 +63,7 @@ const LeftSidebar = ({ isDarkMode, toggleTheme }) => {
               </AnimatePresence>
 
               <link.icon className="text-gray-400 group-[.nav-active]:text-primary group-hover/item:scale-125 transition-all duration-500" size={20} />
-              
+
               {/* Active Dot indicator */}
               <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-1.5 h-0 bg-primary rounded-full group-[.nav-active]:h-4 transition-all duration-700" />
             </Link>
@@ -72,18 +72,18 @@ const LeftSidebar = ({ isDarkMode, toggleTheme }) => {
 
         {/* 🚀 The "Out-of-the-box" Login Button */}
         <div className="flex flex-col items-center gap-6 pb-4">
-          <motion.button 
-            onClick={()=>navigate('/login')}
+          <motion.button
+            onClick={() => navigate('/login')}
             whileHover={{ y: -5, scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className="group/login relative p-5 bg-primary text-dark-bg rounded-[25px] shadow-[0_20px_40px_rgba(254,176,93,0.3)] hover:shadow-primary/60 transition-all overflow-hidden"
           >
-             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/login:translate-y-0 transition-transform duration-500" />
-             <LogIn size={20} className="relative z-10" />
+            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/login:translate-y-0 transition-transform duration-500" />
+            <LogIn size={20} className="relative z-10" />
           </motion.button>
 
           {/* Minimal Theme Switch */}
-          <button 
+          <button
             onClick={toggleTheme}
             className="p-4 rounded-full hover:bg-black/5 dark:hover:bg-white/5 text-gray-400 hover:text-primary transition-colors"
           >
