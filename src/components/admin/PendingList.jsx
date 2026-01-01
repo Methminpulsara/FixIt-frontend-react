@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { handleGarage, handleMechanic } from '../../services/admin.service'; 
-import { X, Eye, Check, XCircle } from 'lucide-react'; 
+import { handleGarage, handleMechanic } from '../../services/admin.service';
+import { X, Eye, Check, XCircle } from 'lucide-react';
 
-const API_BASE_URL = "http://localhost:5000/"; 
+const API_BASE_URL = "http://localhost:5000/";
 
 
 const PendingList = ({ data, type, removeFromList }) => {
@@ -17,7 +17,7 @@ const PendingList = ({ data, type, removeFromList }) => {
                 await handleGarage(id, action);
             }
             toast.success(`User ${action}ed!`);
-            removeFromList(id); 
+            removeFromList(id);
 
         } catch (error) {
             console.log(error);
@@ -51,10 +51,10 @@ const PendingList = ({ data, type, removeFromList }) => {
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
                         {data.map((item) => {
-                            const user = item.userId; 
+                            const user = item.userId;
                             const docs = item.documents || {};
 
-                            if (!user) return null; 
+                            if (!user) return null;
 
                             return (
                                 <tr key={item._id} className="hover:bg-gray-50 dark:hover:bg-[#252525] transition duration-200">
@@ -73,7 +73,7 @@ const PendingList = ({ data, type, removeFromList }) => {
                                     <td className="py-4 px-6">
                                         <div className="flex space-x-3">
                                             {docs.nic && (
-                                                <button 
+                                                <button
                                                     onClick={() => setSelectedDoc({ url: getImageUrl(docs.nic), title: 'NIC' })}
                                                     className="flex items-center gap-1 text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-3 py-1.5 rounded-lg border border-blue-200 dark:border-blue-800 hover:opacity-80 transition"
                                                 >
@@ -81,7 +81,7 @@ const PendingList = ({ data, type, removeFromList }) => {
                                                 </button>
                                             )}
                                             {docs.certificate && (
-                                                <button 
+                                                <button
                                                     onClick={() => setSelectedDoc({ url: getImageUrl(docs.certificate), title: 'Certificate' })}
                                                     className="flex items-center gap-1 text-xs bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 px-3 py-1.5 rounded-lg border border-purple-200 dark:border-purple-800 hover:opacity-80 transition"
                                                 >
@@ -97,14 +97,14 @@ const PendingList = ({ data, type, removeFromList }) => {
 
                                     <td className="py-4 px-6">
                                         <div className="flex justify-center space-x-3">
-                                            <button 
+                                            <button
                                                 onClick={() => handleAction(item._id, 'approve')}
                                                 className="p-2 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full hover:bg-green-200 dark:hover:bg-green-800 transition shadow-sm"
                                                 title="Approve"
                                             >
                                                 <Check size={18} />
                                             </button>
-                                            <button 
+                                            <button
                                                 onClick={() => handleAction(item._id, 'reject')}
                                                 className="p-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm"
                                                 title="Reject"
