@@ -5,6 +5,7 @@ import { X, Eye, Check, XCircle } from 'lucide-react';
 
 const API_BASE_URL = "http://localhost:5000/"; 
 
+
 const PendingList = ({ data, type, removeFromList }) => {
     const [selectedDoc, setSelectedDoc] = useState(null);
 
